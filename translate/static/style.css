@@ -1,0 +1,467 @@
+body {
+    background: #f7f9fa;
+    font-family: 'Noto Sans KR', Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.header {
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    padding: 0 24px;
+    background: #fff;
+    border-bottom: 1px solid #e3e5e8;
+    z-index: 100;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 64px;
+}
+
+/* 로고 */
+.logo-box {
+    margin-right: 18px;
+}
+
+.logo-title,
+.logo-title:visited {
+    color: #232323;
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* 네비게이션 */
+.nav-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex-wrap: nowrap;
+    margin-left: auto;
+    transform: translateX(-65px);
+    transition: transform 0.3s;
+}
+
+.login-form {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    margin: 0;
+}
+
+.input-field {
+    padding: 7px 7px;
+    border-radius: 6px;
+    border: 1px solid #e1e3e9;
+    font-size: 0.98em;
+    width: 140px;
+    min-width: 80px;
+    box-sizing: border-box;
+}
+
+.btn-login {
+    background-color: #2575fa;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.98em;
+    cursor: pointer;
+    min-width: 60px;
+    white-space: nowrap;
+}
+
+.btn-login:hover { background: #0647b1; }
+
+.nav-links {
+    color: #333;
+    font-weight: 500;
+    font-size: 0.98em;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #f3f6fd;
+    border-radius: 6px;
+    padding: 8px 12px;
+    white-space: nowrap;
+    box-sizing: border-box;
+    transition: color .15s, background 0.18s;
+}
+.nav-links:hover { color: #2575fa; background: #e9eefc; }
+
+.main-wrap {
+    max-width: 960px;
+    margin: 90px auto 30px;
+    padding: 0 12px;
+}
+
+/* 번역기 메인 페이지 */
+#translateTitle {
+    text-align: center;
+    font-size: 2.1em;
+    font-weight: bold;
+    margin-bottom: 26px;
+    color: #232a3d;
+    font-family: 'Poppins', 'Noto Sans KR', Arial, sans-serif;
+}
+
+.trans-container {
+    display: flex;
+    gap: 24px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 2px 14px rgba(44,66,87,.08);
+    overflow: hidden;
+    min-height: 360px;
+}
+
+.panel {
+    flex: 1;
+    padding: 32px 26px;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    min-width: 0;
+}
+.panel + .panel { border-left: 1px solid #e9ecf3; background: #fafcff; }
+
+.language-select {
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.language-select select {
+    padding: 6px 16px;
+    font-size: 1em;
+    border-radius: 8px;
+    outline: none;
+    border: 1px solid #e1e3e9;
+    background: #f4f4f4;
+}
+
+.btn-swap {
+    background: #f4f4f4;
+    border: 1px solid #e1e3e9;
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #2575fa;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 0 4px;
+    transition: background 0.18s;
+}
+.btn-swap:hover { background: #e9ecef; }
+
+.input-area, .output-area {
+    flex: 1;
+    border: none;
+    font-size: 1.13em;
+    color: #1a2c3f;
+    background: transparent;
+    resize: none;
+    padding: 0;
+    min-height: 75px;
+    outline: none;
+}
+.input-area::placeholder { color: #aaa; }
+.output-area { color: #0f3a80; margin-top: 10px; white-space: pre-wrap; }
+
+.button-group {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn-default {
+    padding: 9px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.18s;
+}
+
+.btn-translate {
+    background: #2575fa;
+    color: #fff;
+}
+.btn-translate:hover { background: #0647b1; }
+
+.btn-copy {
+    background: #f4f4f4;
+    color: #222;
+    border: 1px solid #e1e3e9;
+}
+.btn-copy:hover { background: #e1e3ea; }
+
+.output-copy {
+    text-align: center;
+    margin-top: 15px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eef1f5;
+    margin: 18px 0 24px;
+}
+
+/* 마이페이지 */
+.mypage-section {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 14px rgba(56,72,96,.10);
+    padding: 36px 28px 28px 28px;
+    margin: 70px auto 0 auto;
+    max-width: 700px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mypage-section h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 24px;
+    letter-spacing: 1px;
+    color: #1a2c3f;
+}
+
+.signup-section {
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 2px 16px rgba(60,72,100,.09);
+    padding: 40px 38px 30px 38px;
+    margin: 100px auto 0 auto;
+    max-width: 430px;
+    width: 96%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.signup-section h2 {
+    font-size: 1.3em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #1a2c3f;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.signup-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.signup-form label {
+    font-size: 1em;
+    color: #232323;
+    margin-bottom: 5px;
+    margin-top: 2px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+/* 기존 일반 input[type="password"] 및 기타 input[type="text"] 스타일 */
+.signup-form input[type="password"],
+.signup-form input[type="text"]:not(#email_id) { /* email_id는 아래에서 따로 스타일링 */
+    padding: 12px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1.05em;
+    background: #fafbfc;
+    transition: border 0.18s;
+    margin-bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.signup-table {
+    width: 100%;
+}
+
+.signup-table td {
+    padding: 10px 0;
+    vertical-align: top;
+}
+
+.signup-table .button-row {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between; /* Ensures space between buttons */
+}
+
+.signup-table .button-row td {
+    flex: 1; /* Makes both table data cells take equal width */
+}
+
+/* Common button styles for signup form */
+.signup-form .btn-default,
+.signup-form .btn-cancel {
+    margin-top: 18px;
+    padding: 12px 0;
+    font-size: 1.12em;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.16s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.signup-form .btn-default {
+    background: #2575fa;
+    color: #fff;
+    border: none;
+}
+
+.signup-form .btn-default:hover {
+    background: #0952bb;
+}
+
+.signup-form .btn-cancel {
+    background: #f4f4f4;
+    color: #222;
+    border: 1px solid #e1e3e9;
+}
+
+.signup-form .btn-cancel:hover {
+    background: #e1e3ea;
+}
+
+/* 테이블 */
+.trans-record-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+    font-size: 1em;
+}
+
+.trans-record-table th,
+.trans-record-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.trans-record-table th { background: #f5faff; }
+.trans-record-table td:last-child { text-align: center; }
+
+.status-empty {
+    color: #aaa;
+    text-align: center;
+    padding: 2em;
+}
+
+/* --- 이메일 그룹 관련 CSS 시작 (이전에 정의된 것과 통합) --- */
+.email-group {
+    display: flex; /* flexbox를 사용하여 내부 요소들을 한 줄에 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    gap: 5px; /* 요소들 사이의 간격 */
+    width: 100%; /* 부모 요소의 너비를 채우도록 */
+    box-sizing: border-box; /* 패딩과 보더가 너비에 포함되도록 */
+}
+
+.email-group input[type="text"] { /* 이메일 아이디 입력 필드 */
+    /* flex-grow 값 조정: 아이디 입력 필드를 줄이고 도메인 선택 상자를 늘리기 위함 */
+    flex: 0.6; /* 1 대신 0.6으로 줄여 아이디 필드 너비 감소 */
+    min-width: 80px; /* 최소 너비 설정 (너무 작아지는 것 방지) */
+    padding: 12px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1.05em;
+    background: #fafbfc;
+    transition: border 0.18s;
+    box-sizing: border-box;
+}
+
+.email-group span { /* @ 기호 */
+    font-size: 1.05em;
+    color: #555;
+    white-space: nowrap; /* 줄바꿈 방지 */
+    margin: 0 2px; /* `@` 기호 양 옆에 약간의 간격 추가 */
+}
+
+.email-group select { /* 이메일 도메인 선택 상자 */
+    /* flex-grow 값 조정: 도메인 선택 상자를 늘려 아이디 필드와 균형 맞춤 */
+    flex: 0.4; /* 1 대신 0.4로 늘려 도메인 필드 너비 증가 */
+    /* width: 120px; 이전 고정 너비 대신 flex를 사용 */
+    padding: 12px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1.05em;
+    background: #fafbfc;
+    transition: border 0.18s;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.signup-form input:focus,
+.email-group input:focus,
+.email-group select:focus { /* focus 스타일 통합 */
+    border-color: #2575fa;
+    outline: none;
+    background: #fff;
+}
+
+
+/* Flash 메시지 스타일 - 이 부분을 기존 CSS 파일의 마지막에 추가 */
+.flashes {
+    list-style: none; /* 리스트 점 제거 */
+    padding: 0;
+    margin: 15px 0; /* 상하 여백 추가 */
+    text-align: center;
+}
+
+.flashes li {
+    padding: 10px 15px; /* 내부 여백 */
+    margin-bottom: 8px; /* 메시지 간 간격 */
+    border-radius: 5px; /* 모서리 둥글게 */
+    font-size: 0.95em;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.success {
+    background-color: #d4edda; /* 연한 녹색 배경 */
+    color: #155724; /* 진한 녹색 글씨 */
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background-color: #f8d7da; /* 연한 빨간색 배경 */
+    color: #721c24; /* 진한 빨간색 글씨 */
+    border: 1px solid #f5c6cb;
+}
+.translation-box {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #e1e3e9;
+    border-radius: 8px;
+    background: #fafbfc;
+    margin-bottom: 20px;
+}
+.translation-box p {
+    margin: 10px 0;
+    font-size: 1.05em;
+}
+.translation-box p strong {
+    color: #1a2c3f;
+    font-weight: 600;
+}

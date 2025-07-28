@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}회원가입{% endblock %}
+
+{% block content %}
+<div class="signup-section">
+    <h2>회원가입</h2>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <ul class="flashes"> {# CSS 적용을 위한 flashes 클래스 #}
+          {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li> {# category 클래스로 success/error 구분 #}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    <form method="post" action="{{ url_for('signup.signup') }}" class="signup-form">
+        <table class="signup-table">
+            <tr>
+                <td>
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" placeholder="이름을 입력하세요" onfocus="this.placeholder=''"
+                           onblur="this.placeholder='이름을 입력하세요'" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="email_id">이메일</label>
+                    <div class="email-group">
+                        <input type="text" name="email_id" id="email_id"
+                               placeholder="이메일 아이디를 입력하세요" onfocus="this.placeholder=''"
+                               onblur="this.placeholder='이메일 아이디를 입력하세요'" required>
+                        <span>@</span>
+                        <select name="emailDomainSelect" id="email_domain_select" required
+                                onchange="handleEmailDomainChange()">
+                            <option value="" selected disabled>이메일 유형 선택</option>
+                            <option value="naver.com">naver.com</option>
+                            <option value="gmail.com">gmail.com</option>
+                            <option value="daum.net">daum.net</option>
+                        </select>
+                        <input type="hidden" name="email" id="fullEmail">
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요"
+                           onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 입력하세요'" required>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="passwordconfrim">비밀번호 확인</label>
+                    <input type="password" id="passwordconfrim" name="passwordconfrim" placeholder="비밀번호를 한 번 더 입력하세요"
+                           onfocus="this.placeholder=''" onblur="this.placeholder='비밀번호를 한 번 더 입력하세요'" required>
+                </td>
+            </tr>
+
+            <tr class="button-row">
+                <td>
+                    <button type="submit" class="btn-default">가입</button>
+                </td>
+                <td>
+                    <button type="reset" class="btn-cancel">취소</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const emailIdInput = document.getElementById('email_id');
+        const emailDomainSelect = document.getElementById('email_domain_select');
+        const fullEmailInput = document.getElementById('fullEmail');
+
+        function updateFullEmail() {
+            const emailId = emailIdInput.value;
+            const selectedDomain = emailDomainSelect.value;
+
+            if (emailId && selectedDomain) {
+                fullEmailInput.value = emailId + '@' + selectedDomain;
+            } else {
+                fullEmailInput.value = '';
+            }
+        }
+
+        emailIdInput.addEventListener('input', updateFullEmail);
+        emailDomainSelect.addEventListener('change', updateFullEmail);
+
+        updateFullEmail();
+        handleEmailDomainChange();
+    });
+
+
+    function handleEmailDomainChange() {
+        const emailDomainSelect = document.getElementById('email_domain_select');
+        const defaultOption = emailDomainSelect.querySelector('option[value=""]');
+
+        if (emailDomainSelect.value !== "" && defaultOption) {
+            defaultOption.disabled = true;
+        }
+
+        const emailIdInput = document.getElementById('email_id');
+        const fullEmailInput = document.getElementById('fullEmail');
+        const selectedDomain = emailDomainSelect.value;
+
+        if (emailIdInput.value && selectedDomain) {
+            fullEmailInput.value = emailIdInput.value + '@' + selectedDomain;
+        } else {
+            fullEmailInput.value = '';
+        }
+    }
+</script>
+{% endblock %}

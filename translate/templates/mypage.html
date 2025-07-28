@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}PolyglotHub | 마이페이지{% endblock %}
+
+{% block content %}
+<div class="mypage-section">
+    <h2><i class="fas fa-history"></i> 내 번역 기록</h2>
+    {% if translations %}
+    <table class="trans-record-table">
+        <thead>
+            <tr>
+                <th>날짜</th>
+                <th>원본 언어</th>
+                <th>원본 텍스트</th>
+                <th>번역 언어</th>
+                <th>번역 텍스트</th>
+                <th>공유</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for row in translations %}
+            <tr>
+                <td>{{ row.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+                <td>{{ languages[row.source_lang] }}</td>
+                <td>{{ row.original_text|e }}</td>
+                <td>{{ languages[row.target_lang] }}</td>
+                <td>{{ row.after|e }}</td>
+                <td><a href="{{ url_for('view_translation', id=row.id) }}">보기</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <div class="status-empty">번역 기록이 없습니다.</div>
+    {% endif %}
+</div>
+{% endblock %}

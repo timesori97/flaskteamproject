@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}PolyglotHub | 번역기{% endblock %}
+
+{% block content %}
+
+<span id="translateTitle">다국어 번역기</span>
+<div class="trans-container">
+    <form method="post" action="{{ url_for('translate') }}" class="panel" autocomplete="off">
+        <div class="language-select">
+            <select name="source_lang" id="source_lang">
+                <option value="auto" {% if source_lang == 'auto' %}selected{% endif %}>자동 감지</option>
+                {% for code, name in languages.items() %}
+                    <option value="{{ code }}" {% if source_lang == code %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="btn-swap" title="언어 위치 바꾸기" onclick="swapLanguages();">
+                <i class="fas fa-exchange-alt"></i>
+            </button>
+        </div>
+        <textarea name="text" class="input-area" id="inputText"
+            placeholder="번역할 내용을 입력하세요" required>{{ input_text|default('')|e }}</textarea>
+        <div class="button-group">
+            <button class="btn-default btn-translate" type="submit" name="action" value="translate">번역하기</button>
+            <button type="button" class="btn-default btn-copy" onclick="copyText('inputText')">
+                <i class="fas fa-copy"></i> 복사
+            </button>
+        </div>
+        <!-- target_lang을 폼 내부에 숨김 필드로 추가 -->
+        <input type="hidden" name="target_lang" id="hidden_target_lang" value="{{ target_lang }}">
+    </form>
+    <div class="panel">
+        <div class="language-select">
+            <select id="target_lang" onchange="updateHiddenTargetLang()">
+                {% for code, name in languages.items() %}
+                    <option value="{{ code }}" {% if target_lang == code %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="btn-swap" title="언어 위치 바꾸기" onclick="swapLanguages();">
+                <i class="fas fa-exchange-alt"></i>
+            </button>
+        </div>
+        <div class="output-area" id="outputText">
+            {% if translated_text and translated_text.translated_text %}
+                {{ translated_text.translated_text|e }}
+            {% elif translated_text and translated_text.error %}
+                <div class="error">{{ translated_text.error }}</div>
+            {% endif %}
+        </div>
+        <div class="output-copy">
+            {% if translated_text and translated_text.translated_text %}
+                <button type="button" class="btn-default btn-copy" onclick="copyText('outputText')">
+                    <i class="fas fa-copy"></i> 복사
+                </button>
+                {% if translated_text.translation_id %}
+                    <button type="button" class="btn-default" onclick="shareOnFacebook()">페이스북 공유</button>
+                    <button type="button" class="btn-default" onclick="shareOnTwitter()">트위터 공유</button>
+                {% endif %}
+            {% endif %}
+        </div>
+        {% if translated_text and translated_text.translated_text %}
+            <input type="hidden" name="last_output" value="{{ translated_text.translated_text|e }}">
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<style>
+.error {
+    color: red;
+    font-weight: bold;
+    margin-top: 10px;
+}
+</style>
+<script>
+function swapLanguages() {
+    let s = document.getElementById('source_lang');
+    let t = document.getElementById('target_lang');
+    let sourceValue = s.value;
+    let targetValue = t.value;
+    if (sourceValue !== 'auto' && sourceValue === targetValue) {
+        alert('소스 언어와 대상 언어가 같습니다.');
+        return;
+    }
+    s.value = targetValue;
+    t.value = sourceValue;
+    updateHiddenTargetLang();
+    document.querySelector("form").submit();
+}
+function updateHiddenTargetLang() {
+    let t = document.getElementById('target_lang');
+    let hidden = document.getElementById('hidden_target_lang');
+    hidden.value = t.value;
+}
+function copyText(elementId) {
+    let el = document.getElementById(elementId);
+    let val = el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' ? el.value : el.innerText;
+    navigator.clipboard.writeText(val.toString())
+        .then(() => { alert('복사되었습니다!'); })
+        .catch(err => {
+            console.error('복사 실패:', err);
+            alert('복사에 실패했습니다.');
+        });
+}
+let shareUrl = {% if translated_text and translated_text.translation_id %}'{{ url_for('view_translation', id=translated_text.translation_id, _external=True) }}'{% else %}''{% endif %};
+function shareOnFacebook() {
+    const encodedUrl = encodeURIComponent(shareUrl);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, '_blank');
+}
+function shareOnTwitter() {
+    const encodedUrl = encodeURIComponent(shareUrl);
+    window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=번역된 텍스트를 확인하세요!`, '_blank');
+}
+</script>
+{% endblock %}

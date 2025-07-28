@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}PolyglotHub | 번역 기록{% endblock %}
+
+{% block content %}
+<div class="mypage-section">
+    <h2>번역 기록</h2>
+    <div class="translation-box">
+        <p><strong>원본 언어:</strong> {{ languages[source_lang] }}</p>
+        <p><strong>대상 언어:</strong> {{ languages[target_lang] }}</p>
+        <p><strong>원문:</strong> {{ before_text|e }}</p>
+        <p><strong>번역문:</strong> {{ after_text|e }}</p>
+        <div class="button-group">
+            <button class="btn-default btn-copy" onclick="copyText()">
+                <i class="fas fa-copy"></i> 복사
+            </button>
+            <button class="btn-default" onclick="shareOnFacebook()">페이스북 공유</button>
+            <button class="btn-default" onclick="shareOnTwitter()">트위터 공유</button>
+            <button class="btn-default" onclick="shareOnLinkedIn()">링크드인 공유</button>
+            <button class="btn-default" onclick="shareViaEmail()">이메일 공유</button>
+        </div>
+    </div>
+    <a href="{{ url_for('translate') }}" class="nav-links">다른 텍스트 번역하기</a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function copyText() {
+    const text = "{{ after_text|e }}";
+    navigator.clipboard.writeText(text).then(() => {
+        alert('번역된 텍스트가 복사되었습니다.');
+    }).catch(err => {
+        alert('텍스트 복사에 실패했습니다.');
+    });
+}
+let shareUrl = '{{ url_for('view_translation', id=id, _external=True) }}';
+function shareOnFacebook() {
+    const encodedUrl = encodeURIComponent(shareUrl);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`, '_blank');
+}
+function shareOnTwitter() {
+    const encodedUrl = encodeURIComponent(shareUrl);
+    window.open(`https://twitter.com/intent/tweet?url=${encodedUrl}&text=번역된 텍스트를 확인하세요!`, '_blank');
+}
+function shareOnLinkedIn() {
+    const encodedUrl = encodeURIComponent(shareUrl);
+    window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=번역&summary=번역된 텍스트를 확인하세요!`, '_blank');
+}
+function shareViaEmail() {
+    const encodedUrl = encodeURIComponent(shareUrl);
+    window.open(`mailto:?subject=번역된 텍스트&body=번역된 텍스트를 확인하세요: ${encodedUrl}`, '_blank');
+}
+</script>
+{% endblock %}

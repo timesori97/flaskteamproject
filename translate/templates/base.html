@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}PolyglotHub 번역기{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="logo-box">
+            <a href="{{ url_for('translate') }}" class="logo-title">PolyglotHub</a>
+        </div>
+        <nav class="nav-bar">
+            {% if session.get('user_email') %}
+                <a class="nav-links" href="{{ url_for('mypage') }}"><i class="fas fa-user"></i> 마이페이지</a>
+                <a class="nav-links" href="{{ url_for('logout.logout') }}"><i class="fas fa-sign-out-alt"></i> 로그아웃</a>
+            {% else %}
+                <form class="login-form" method="post" action="{{ url_for('login.login') }}">
+                    <input type="email" name="email" class="input-field" placeholder="이메일" required autocomplete="username">
+                    <input type="password" name="password" class="input-field" placeholder="비밀번호" required autocomplete="current-password">
+                    <button type="submit" class="btn btn-login">
+                        <i class="fas fa-sign-in-alt"></i> 로그인
+                    </button>
+                </form>
+                <a class="nav-links" href="{{ url_for('signup.signup') }}"><i class="fas fa-user-plus"></i> 회원가입</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <div class="global-flash-messages-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flashes global-flashes">
+              {% for category, message in messages %}
+                <li class="{{ category }}">{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="main-wrap">
+        {% block content %}{% endblock %}
+    </div>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
